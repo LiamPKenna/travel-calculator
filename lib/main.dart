@@ -7,26 +7,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Travel Calculator',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HelloYou(),
+      home: FuelForm(),
     );
   }
 }
 
-class HelloYou extends StatefulWidget {
+class FuelForm extends StatefulWidget {
   @override
-  _HelloYouState createState() => _HelloYouState();
+  _FuelFormState createState() => _FuelFormState();
 }
 
-class _HelloYouState extends State<HelloYou> {
+class _FuelFormState extends State<FuelForm> {
   String name = '';
   final _currencies = ['Dollars', 'Euro', 'Pounds'];
   String _currency = 'Dollars';
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = Theme.of(context).textTheme.title;
     return Scaffold(
       appBar: AppBar(
         title: Text('Hello'),
@@ -37,22 +38,29 @@ class _HelloYouState extends State<HelloYou> {
         child: Column(
           children: <Widget>[
             TextField(
-              decoration: InputDecoration(hintText: 'Please type your name'),
+              decoration: InputDecoration(
+                  hintText: 'e.g. 124',
+                  labelText: 'Distance',
+                  labelStyle: textStyle,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  )),
+              keyboardType: TextInputType.number,
               onChanged: (String string) {
                 setState(() {
                   name = string;
                 });
               },
             ),
-            DropdownButton<String>(
-                items: _currencies.map((String value) {
-                  return DropdownMenuItem<String>(
-                      value: value, child: Text(value));
-                }).toList(),
-                value: _currency,
-                onChanged: (String value) {
-                  _onDropdownChange(value);
-                }),
+            // DropdownButton<String>(
+            //     items: _currencies.map((String value) {
+            //       return DropdownMenuItem<String>(
+            //           value: value, child: Text(value));
+            //     }).toList(),
+            //     value: _currency,
+            //     onChanged: (String value) {
+            //       _onDropdownChange(value);
+            //     }),
             Text('Hello ' + name + '!'),
           ],
         ),
