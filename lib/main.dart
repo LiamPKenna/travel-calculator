@@ -26,6 +26,8 @@ class _FuelFormState extends State<FuelForm> {
   final _currencies = ['Dollars', 'Euro', 'Pounds'];
   String _currency = 'Dollars';
   TextEditingController distanceController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController perUnitController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.title;
@@ -49,6 +51,28 @@ class _FuelFormState extends State<FuelForm> {
                   )),
               keyboardType: TextInputType.number,
             ),
+            TextField(
+              controller: perUnitController,
+              decoration: InputDecoration(
+                  hintText: 'e.g. 17',
+                  labelText: 'Distance per Unit',
+                  labelStyle: textStyle,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  )),
+              keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: priceController,
+              decoration: InputDecoration(
+                  hintText: 'e.g. 3.50',
+                  labelText: 'Price',
+                  labelStyle: textStyle,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  )),
+              keyboardType: TextInputType.number,
+            ),
             DropdownButton<String>(
                 items: _currencies.map((String value) {
                   return DropdownMenuItem<String>(
@@ -63,7 +87,10 @@ class _FuelFormState extends State<FuelForm> {
                 textColor: Theme.of(context).primaryColorLight,
                 onPressed: () {
                   setState(() {
-                    result = distanceController.text;
+                    result = "Your trip will cost " +
+                        _calculate().toStringAsFixed(2) +
+                        ' ' +
+                        _currency;
                   });
                 },
                 child: Text(
@@ -77,9 +104,16 @@ class _FuelFormState extends State<FuelForm> {
     );
   }
 
-  _onDropdownChange(String value) {
+  void _onDropdownChange(String value) {
     setState(() {
       this._currency = value;
     });
+  }
+
+  double _calculate() {
+    double _distance = double.parse(this.distanceController.text);
+    double _price = double.parse(this.priceController.text);
+    double _perUnit = double.parse(this.perUnitController.text);
+    return _distance / _perUnit * _price;
   }
 }
