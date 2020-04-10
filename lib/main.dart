@@ -22,9 +22,10 @@ class FuelForm extends StatefulWidget {
 }
 
 class _FuelFormState extends State<FuelForm> {
-  String name = '';
+  String result = '';
   final _currencies = ['Dollars', 'Euro', 'Pounds'];
   String _currency = 'Dollars';
+  TextEditingController distanceController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.title;
@@ -38,6 +39,7 @@ class _FuelFormState extends State<FuelForm> {
         child: Column(
           children: <Widget>[
             TextField(
+              controller: distanceController,
               decoration: InputDecoration(
                   hintText: 'e.g. 124',
                   labelText: 'Distance',
@@ -46,22 +48,29 @@ class _FuelFormState extends State<FuelForm> {
                     borderRadius: BorderRadius.circular(5.0),
                   )),
               keyboardType: TextInputType.number,
-              onChanged: (String string) {
-                setState(() {
-                  name = string;
-                });
-              },
             ),
-            // DropdownButton<String>(
-            //     items: _currencies.map((String value) {
-            //       return DropdownMenuItem<String>(
-            //           value: value, child: Text(value));
-            //     }).toList(),
-            //     value: _currency,
-            //     onChanged: (String value) {
-            //       _onDropdownChange(value);
-            //     }),
-            Text('Hello ' + name + '!'),
+            DropdownButton<String>(
+                items: _currencies.map((String value) {
+                  return DropdownMenuItem<String>(
+                      value: value, child: Text(value));
+                }).toList(),
+                value: _currency,
+                onChanged: (String value) {
+                  _onDropdownChange(value);
+                }),
+            RaisedButton(
+                color: Theme.of(context).primaryColorDark,
+                textColor: Theme.of(context).primaryColorLight,
+                onPressed: () {
+                  setState(() {
+                    result = distanceController.text;
+                  });
+                },
+                child: Text(
+                  'Submit',
+                  textScaleFactor: 1.5,
+                )),
+            Text(result),
           ],
         ),
       ),
